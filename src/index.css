@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+/* Lenis: su CSS no se exporta como ruta, se copia aquí. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Papel claro (variante): `void` es el papel, `texto` la tinta. Mezclas con multiply, nunca screen. */
+@theme {
+  --font-display: "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+  --font-sans: "Jost", "Futura", system-ui, sans-serif;
+  --font-cifra: "Jost", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --color-void: oklch(95.5% 0.018 85);
+  --color-superficie: oklch(92% 0.022 85);
+  --color-elevado: oklch(98.5% 0.008 85);
+  --color-borde: oklch(80% 0.02 80);
+  --color-rojo: oklch(55% 0.215 29);
+  --color-rojo-profundo: oklch(47% 0.19 29);
+  --color-tinta: oklch(17% 0.012 60);
+  --color-texto: oklch(17% 0.012 60);
+  --color-texto-2: oklch(38% 0.015 60);
+  --color-texto-3: oklch(52% 0.015 70);
+
+  --text-hero: clamp(3rem, 7.4vw, 8.5rem);
+  --text-hero--line-height: 0.92;
+  --text-hero--letter-spacing: -0.03em;
+
+  --text-display: clamp(2rem, 4.4vw, 4rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.02em;
+
+  --text-lead: clamp(1.125rem, 1.6vw, 1.5rem);
+  --text-lead--line-height: 1.45;
+
+  --text-body: clamp(1rem, 1.1vw, 1.125rem);
+  --text-body--line-height: 1.6;
+
+  --text-etiqueta: 0.75rem;
+  --text-etiqueta--line-height: 1.3;
+  --text-etiqueta--letter-spacing: 0.14em;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    background: var(--color-void);
+  }
+  body {
+    margin: 0;
+    background: var(--color-void);
+    color: var(--color-texto);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-rojo);
+    color: var(--color-void);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-tinta);
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  .h-pantalla {
+    height: 100svh;
+  }
+
+  /* Esquinas de visor del HUD. */
+  .esquinas {
+    --l: 14px;
+    background:
+      linear-gradient(currentColor, currentColor) top left / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) top left / 1px var(--l),
+      linear-gradient(currentColor, currentColor) top right / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) top right / 1px var(--l),
+      linear-gradient(currentColor, currentColor) bottom left / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) bottom left / 1px var(--l),
+      linear-gradient(currentColor, currentColor) bottom right / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) bottom right / 1px var(--l);
+    background-repeat: no-repeat;
+  }
+
+  /* Entradas: 600 ms con escalonado de 90 ms (--i). */
+  [data-aparece] {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+      opacity 0.6s cubic-bezier(0.2, 0.7, 0.1, 1),
+      transform 0.6s cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  [data-aparece].dentro {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-aparece] {
+      transform: none;
+      transition-duration: 0.01ms;
+    }
+  }
+}
+
+@keyframes entra-paso {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+}
+
+/* Rejilla de fondo, como papel milimetrado de imprenta. */
+.rejilla {
+  background-image:
+    linear-gradient(color-mix(in oklch, var(--color-tinta) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklch, var(--color-tinta) 7%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Grano de papel: ruido SVG en multiply, sin imagen externa. */
+.grano::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .42 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Cinta de precinto en diagonal sobre una ficha. --corte (0–1) la rompe: las dos mitades se separan. */
+.precinto {
+  --corte: 0;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.precinto > span {
+  position: absolute;
+  left: -20%;
+  width: 70%;
+  top: 34%;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.6rem;
+  background: var(--color-rojo);
+  color: var(--color-void);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: transform 0.7s cubic-bezier(0.6, 0, 0.2, 1), opacity 0.7s;
+  transform: rotate(-14deg) translate3d(calc(var(--corte) * -60%), calc(var(--corte) * 40%), 0);
+  opacity: calc(1 - var(--corte));
+  box-shadow: 0 1px 0 color-mix(in oklch, var(--color-tinta) 25%, transparent);
+  transform-origin: 100% 50%;
+}
+.precinto > span + span {
+  left: 50%;
+  justify-content: flex-start;
+  padding-left: 0.6rem;
+  padding-right: 0;
+  transform-origin: 0 50%;
+  transform: rotate(-14deg) translate3d(calc(var(--corte) * 60%), calc(var(--corte) * -40%), 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .precinto > span {
+    transition-duration: 0.01ms;
+  }
+}
+
+dialog::backdrop {
+  background: color-mix(in oklch, var(--color-tinta) 55%, transparent);
+}

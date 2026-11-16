@@ -1,0 +1,541 @@
+/** Todo el texto de la página vive aquí. Los componentes no llevan texto suelto. */
+
+/** Medianoche del 1 de enero de 2027 en Madrid. Antes: todo precintado. Después: todo libre. */
+export const APERTURA = new Date('2027-01-01T00:00:00+01:00');
+
+export type RelojId = 'eeuu' | 'europa' | 'espana';
+export type TipoId = 'cine' | 'libro' | 'musica' | 'arte' | 'personaje';
+
+export const relojes: {id: RelojId; nombre: string; corto: string; anio: number; regla: string; cuenta: string; texto: string}[] = [
+  {
+    id: 'eeuu',
+    nombre: 'Estados Unidos',
+    corto: 'EE. UU.',
+    anio: 1931,
+    regla: 'Publicación + 95 años',
+    cuenta: '1931 + 95 = 2026',
+    texto:
+      'Allí manda la fecha de publicación, no la muerte del autor. Todo lo publicado en 1931 cumple sus 95 años el 31 de diciembre de 2026: cine, novelas, canciones, cómics y cuadros.',
+  },
+  {
+    id: 'europa',
+    nombre: 'Europa',
+    corto: 'Europa',
+    anio: 1956,
+    regla: 'Muerte del autor + 70 años',
+    cuenta: '1956 + 70 = 2026',
+    texto:
+      'En casi toda Europa cuenta la vida del autor más 70 años, desde el 1 de enero siguiente a su muerte. Se liberan quienes murieron en 1956, da igual el mes.',
+  },
+  {
+    id: 'espana',
+    nombre: 'España',
+    corto: 'España',
+    anio: 1946,
+    regla: 'Muerte + 80 años (fallecidos antes del 7-12-1987)',
+    cuenta: '1946 + 80 = 2026',
+    texto:
+      'España conserva el plazo de la Ley de 1879 para quien murió antes del 7 de diciembre de 1987: vida más 80 años. Por eso aquí llega ahora quien en el Reino Unido se liberó en 2017.',
+  },
+];
+
+export const tipos: {id: TipoId; nombre: string; signo: string}[] = [
+  {id: 'cine', nombre: 'Cine', signo: '▶'},
+  {id: 'libro', nombre: 'Letras', signo: '¶'},
+  {id: 'musica', nombre: 'Música', signo: '♪'},
+  {id: 'arte', nombre: 'Arte y diseño', signo: '■'},
+  {id: 'personaje', nombre: 'Personajes', signo: '●'},
+];
+
+export type Obra = {
+  id: string;
+  titulo: string;
+  original?: string;
+  autor: string;
+  /** Año de publicación (EE. UU.) o de muerte del autor (Europa, España). */
+  anio: number;
+  reloj: RelojId;
+  tipo: TipoId;
+  texto: string;
+  /** La letra pequeña: qué no se libera o dónde no vale. */
+  ojo?: string;
+};
+
+export const obras: Obra[] = [
+  // EE. UU.: publicado en 1931
+  {
+    id: 'frankenstein',
+    titulo: 'El doctor Frankenstein',
+    original: 'Frankenstein',
+    autor: 'James Whale · Universal',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'Boris Karloff con tornillos en el cuello, la mesa de operaciones y el «¡Está vivo!». La imagen del monstruo que todo el mundo dibuja nace aquí, no en la novela.',
+    ojo: 'Se libera la película, no la marca: Universal conserva marcas sobre el aspecto del monstruo. Usarlo como logo o producto sigue siendo terreno suyo.',
+  },
+  {
+    id: 'dracula',
+    titulo: 'Drácula',
+    original: 'Dracula',
+    autor: 'Tod Browning · Universal',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'Bela Lugosi, la capa y el acento. La primera adaptación sonora y autorizada de la novela de Stoker fijó cómo habla un vampiro.',
+  },
+  {
+    id: 'dracula-es',
+    titulo: 'Drácula, versión española',
+    autor: 'George Melford · Universal',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'Se rodó de noche en los mismos decorados que la de Lugosi, con Carlos Villarías y Lupita Tovar. Más larga y más atrevida: muchos críticos la prefieren.',
+  },
+  {
+    id: 'luces',
+    titulo: 'Luces de la ciudad',
+    original: 'City Lights',
+    autor: 'Charles Chaplin',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'Chaplin se negó a hablar cuando todo Hollywood ya hablaba: muda, con música propia y uno de los finales más famosos del cine.',
+    ojo: 'Libre en EE. UU. Fuera de allí cuenta la muerte de los autores, y Chaplin murió en 1977.',
+  },
+  {
+    id: 'm',
+    titulo: 'M, el vampiro de Düsseldorf',
+    original: 'M',
+    autor: 'Fritz Lang',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'Peter Lorre silbando a Grieg y una ciudad entera, policía y hampa, buscando al mismo hombre. El primer gran thriller del cine sonoro.',
+    ojo: 'Libre en EE. UU. En Europa cuenta la muerte de Lang, en 1976.',
+  },
+  {
+    id: 'enemigo',
+    titulo: 'El enemigo público',
+    original: 'The Public Enemy',
+    autor: 'William A. Wellman',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'James Cagney y el pomelo en la cara de Mae Clarke. El gánster que convirtió a un bailarín de vodevil en estrella.',
+  },
+  {
+    id: 'jekyll',
+    titulo: 'El hombre y el monstruo',
+    original: 'Dr. Jekyll and Mr. Hyde',
+    autor: 'Rouben Mamoulian',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'La transformación en plano continuo, con filtros de color sobre película en blanco y negro, aún se estudia. Fredric March ganó el Óscar al mejor actor.',
+  },
+  {
+    id: 'tabu',
+    titulo: 'Tabú',
+    original: 'Tabu: A Story of the South Seas',
+    autor: 'F. W. Murnau',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'cine',
+    texto: 'La última película de Murnau, rodada en Bora Bora con actores no profesionales. Murió en un accidente de coche una semana antes del estreno.',
+  },
+  {
+    id: 'pluto',
+    titulo: 'Pluto, con nombre',
+    original: 'The Moose Hunt',
+    autor: 'Walt Disney Productions',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'personaje',
+    texto: 'En este corto el perro de Mickey se llama Pluto por primera vez. Un año antes había salido como Rover.',
+    ojo: 'Se libera el corto de 1931 y ese Pluto. Las versiones posteriores y las marcas siguen siendo de Disney.',
+  },
+  {
+    id: 'sombra',
+    titulo: 'La Sombra',
+    original: 'The Living Shadow',
+    autor: 'Walter B. Gibson',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'personaje',
+    texto: 'La primera novela pulp del justiciero que sabe qué mal acecha en el corazón de los hombres. Uno de los abuelos de Batman.',
+  },
+  {
+    id: 'buena-tierra',
+    titulo: 'La buena tierra',
+    original: 'The Good Earth',
+    autor: 'Pearl S. Buck',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'libro',
+    texto: 'Un campesino chino, de la tierra a la riqueza. Ganó el Pulitzer y fue el libro más vendido en EE. UU. dos años seguidos.',
+  },
+  {
+    id: 'olas',
+    titulo: 'Las olas',
+    original: 'The Waves',
+    autor: 'Virginia Woolf',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'libro',
+    texto: 'Seis voces que se alternan de la infancia a la vejez, como olas sobre la misma playa. La novela más arriesgada de Woolf.',
+    ojo: 'En Europa ya era libre: Woolf murió en 1941. Lo nuevo es EE. UU.',
+  },
+  {
+    id: 'santuario',
+    titulo: 'Santuario',
+    original: 'Sanctuary',
+    autor: 'William Faulkner',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'libro',
+    texto: 'Faulkner dijo que la escribió para ganar dinero. Lo consiguió: fue su primer éxito y su libro más escandaloso.',
+  },
+  {
+    id: 'llave',
+    titulo: 'La llave de cristal',
+    original: 'The Glass Key',
+    autor: 'Dashiell Hammett',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'libro',
+    texto: 'Política sucia, un asesinato y un protagonista que no es detective, sino el hombre de confianza de un cacique.',
+  },
+  {
+    id: 'sittaford',
+    titulo: 'El misterio de Sittaford',
+    original: 'The Sittaford Mystery',
+    autor: 'Agatha Christie',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'libro',
+    texto: 'Una sesión de espiritismo en una casa nevada anuncia un asesinato que ya ha ocurrido. Sin Poirot ni Marple.',
+  },
+  {
+    id: 'maigret',
+    titulo: 'Pietr el Letón',
+    original: 'Pietr-le-Letton',
+    autor: 'Georges Simenon',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'personaje',
+    texto: 'La primera novela oficial del comisario Maigret, en el francés original.',
+  },
+  {
+    id: 'babar',
+    titulo: 'Historia de Babar',
+    original: 'Histoire de Babar',
+    autor: 'Jean de Brunhoff',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'personaje',
+    texto: 'El elefante que huye a la ciudad, se compra un traje verde y vuelve para ser rey. El álbum original en francés.',
+  },
+  {
+    id: 'as-time',
+    titulo: '«As Time Goes By»',
+    autor: 'Herman Hupfeld',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'musica',
+    texto: 'Se estrenó en un musical de Broadway que nadie recuerda. Once años después Dooley Wilson la tocó en Casablanca.',
+    ojo: 'Se libera la canción, no Casablanca (1942) ni sus grabaciones.',
+  },
+  {
+    id: 'minnie',
+    titulo: '«Minnie the Moocher»',
+    autor: 'Cab Calloway e Irving Mills',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'musica',
+    texto: 'El «hi-de-hi-de-hi-de-ho» que el público coreaba de vuelta. La canción que hizo de Calloway una estrella del Cotton Club.',
+  },
+  {
+    id: 'all-of-me',
+    titulo: '«All of Me»',
+    autor: 'Gerald Marks y Seymour Simons',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'musica',
+    texto: 'Uno de los estándares de jazz más grabados. Billie Holiday, Sinatra, Armstrong: todos la cantaron.',
+  },
+  {
+    id: 'which-side',
+    titulo: '«Which Side Are You On?»',
+    autor: 'Florence Reece',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'musica',
+    texto: 'La escribió la mujer de un minero en huelga de Kentucky, sobre la melodía de un himno, en la hoja de un calendario.',
+  },
+  {
+    id: 'persistencia',
+    titulo: 'La persistencia de la memoria',
+    autor: 'Salvador Dalí',
+    anio: 1931,
+    reloj: 'eeuu',
+    tipo: 'arte',
+    texto: 'Los relojes blandos sobre la costa de Portlligat. Un lienzo de 24 × 33 cm que es casi el logotipo del surrealismo.',
+    ojo: 'Libre en EE. UU., pero no en España: Dalí murió en 1989, así que aquí sigue protegido hasta 2060.',
+  },
+
+  // Europa: autores muertos en 1956 (vida + 70)
+  {
+    id: 'brecht',
+    titulo: 'Bertolt Brecht',
+    autor: 'Poemas, novelas y teatro propio',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'libro',
+    texto: 'Madre Coraje, Galileo, el círculo de tiza. El teatro que pide al público que piense en vez de llorar.',
+    ojo: 'Solo lo que escribió solo o con coautores que murieron antes que él. Una obra en colaboración se libera 70 años después de la muerte del último coautor.',
+  },
+  {
+    id: 'milne',
+    titulo: 'A. A. Milne',
+    autor: 'Winnie-the-Pooh y el resto de su obra',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'personaje',
+    texto: 'El oso de poco cerebro y el bosque de los Cien Acres llegan a Europa. En EE. UU. el primer libro era libre desde 2022.',
+    ojo: 'El texto sí; los dibujos de E. H. Shepard no, porque murió en 1976. Y el Pooh de camiseta roja es de Disney.',
+  },
+  {
+    id: 'pollock',
+    titulo: 'Jackson Pollock',
+    autor: 'Pintura',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'arte',
+    texto: 'El lienzo en el suelo y la pintura que gotea. Murió en un accidente de coche a los 44 años.',
+  },
+  {
+    id: 'renner',
+    titulo: 'Paul Renner',
+    autor: 'La tipografía Futura',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'arte',
+    texto: 'La letra de círculos y triángulos que viajó a la Luna en la placa del Apolo 11. Esta página usa Jost, una heredera libre.',
+    ojo: 'Se libera el diseño de Renner; los archivos de fuente que vende cada fundición tienen sus propios derechos.',
+  },
+  {
+    id: 'de-la-mare',
+    titulo: 'Walter de la Mare',
+    autor: 'Poesía y cuentos de fantasmas',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'libro',
+    texto: '«The Listeners» y cuentos donde lo sobrenatural nunca se explica del todo. Maestro del miedo callado.',
+  },
+  {
+    id: 'korda',
+    titulo: 'Alexander Korda',
+    autor: 'Cine',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'cine',
+    texto: 'El húngaro que levantó la industria británica con La vida privada de Enrique VIII.',
+    ojo: 'En el cine europeo cuentan director, guionistas y compositor: la película se libera cuando lo está el último de ellos.',
+  },
+  {
+    id: 'kallas',
+    titulo: 'Aino Kallas',
+    autor: 'Narrativa',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'libro',
+    texto: 'La novia del lobo: una leyenda estonia de mujer y loba contada por una escritora finlandesa.',
+  },
+  {
+    id: 'guntekin',
+    titulo: 'Reşat Nuri Güntekin',
+    autor: 'Çalıkuşu',
+    anio: 1956,
+    reloj: 'europa',
+    tipo: 'libro',
+    texto: 'La maestra Feride recorriendo Anatolia. Una de las novelas turcas más leídas, llevada varias veces a la televisión.',
+  },
+
+  // España: autores muertos en 1946 (vida + 80)
+  {
+    id: 'falla',
+    titulo: 'Manuel de Falla',
+    autor: 'Música',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'musica',
+    texto: 'El amor brujo, Noches en los jardines de España, El sombrero de tres picos. Murió en Alta Gracia, Argentina, el 14 de noviembre de 1946.',
+    ojo: 'Atlántida la terminó Ernesto Halffter y se estrenó en 1961: esa versión tiene derechos propios. Y los libretos ajenos cuentan por su autor.',
+  },
+  {
+    id: 'marquina',
+    titulo: 'Eduardo Marquina',
+    autor: 'Teatro en verso',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: 'En Flandes se ha puesto el sol y el teatro histórico que llenaba salas a principios del siglo XX.',
+  },
+  {
+    id: 'ossorio',
+    titulo: 'Ángel Ossorio',
+    autor: 'El alma de la toga',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: 'El libro que aún se regala en las facultades de Derecho. El dominio público también libera ensayo y oficio.',
+  },
+  {
+    id: 'wells',
+    titulo: 'H. G. Wells',
+    autor: 'La máquina del tiempo, La guerra de los mundos',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: 'Medio mundo lo celebró libre en 2017. En España, la cuenta de 1946 lleva a 2027.',
+    ojo: 'Autor extranjero: conviene comprobar cada caso. Y las traducciones al castellano tienen sus propios derechos.',
+  },
+  {
+    id: 'stein',
+    titulo: 'Gertrude Stein',
+    autor: 'Autobiografía de Alice B. Toklas',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: '«Una rosa es una rosa es una rosa». El salón de París por el que pasaron Picasso, Matisse y Hemingway.',
+    ojo: 'Las traducciones casi siempre siguen protegidas.',
+  },
+  {
+    id: 'keynes',
+    titulo: 'John Maynard Keynes',
+    autor: 'Teoría general del empleo, el interés y el dinero',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: 'El economista que convenció a los gobiernos de gastar en las crisis.',
+  },
+  {
+    id: 'moholy',
+    titulo: 'László Moholy-Nagy',
+    autor: 'Fotografía, pintura y diseño',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'arte',
+    texto: 'Profesor de la Bauhaus, fotogramas sin cámara y un modulador de luz y espacio. La rejilla de esta página le debe algo.',
+  },
+  {
+    id: 'hauptmann',
+    titulo: 'Gerhart Hauptmann',
+    autor: 'Los tejedores',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: 'Premio Nobel de 1912. Una revuelta de tejedores silesios convertida en el primer gran drama de protagonista colectivo.',
+  },
+  {
+    id: 'gag',
+    titulo: 'Wanda Gág',
+    autor: 'Millions of Cats',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: 'Un anciano que no sabe elegir gato y vuelve a casa con millones. Uno de los primeros álbumes ilustrados modernos.',
+  },
+  {
+    id: 'runyon',
+    titulo: 'Damon Runyon',
+    autor: 'Cuentos de Broadway',
+    anio: 1946,
+    reloj: 'espana',
+    tipo: 'libro',
+    texto: 'Jugadores, coristas y gánsteres de buen corazón. De sus cuentos salió Ellos y ellas.',
+    ojo: 'Murió el 10 de diciembre de 1946 y se libera el mismo día que quien murió en enero: el plazo cuenta desde el 1 de enero siguiente.',
+  },
+];
+
+export const portada = {
+  antetitulo: 'Día del Dominio Público · 2027',
+  titulo: 'Precintado',
+  destacado: 'hasta el 1 de enero',
+  bajada: 'Cine, libros, canciones y cuadros que a medianoche dejan de tener dueño. Depende de dónde estés.',
+  invitacion: 'Desliza para romper el precinto',
+  libre: 'Ya es de todos',
+  cuentaEtiqueta: 'Abre en',
+  abierto: 'Abierto desde el 01·01·2027',
+  unidades: ['días', 'h', 'min', 's'] as const,
+};
+
+export const intro = {
+  antetitulo: 'Qué pasa el 1 de enero',
+  titulo: 'Cada año, a medianoche, una parte de la cultura deja de tener dueño.',
+  cuerpo:
+    'Desde ese momento cualquiera puede copiarla, adaptarla, representarla o venderla sin pedir permiso. Pero no hay una sola medianoche: cada país cuenta con su reloj, y la misma obra puede ser libre en Nueva York y seguir protegida en Madrid.',
+};
+
+export const relojesTexto = {
+  antetitulo: 'Tres relojes',
+  titulo: 'La misma medianoche, tres cuentas distintas',
+  etiqueta: 'Esfera de años: cada aguja marca el año que se libera en 2027',
+};
+
+export const estanteria = {
+  antetitulo: 'La estantería',
+  titulo: 'Lo que se libera',
+  cuerpo: 'Una selección, no la lista completa. Pulsa una obra para leer la letra pequeña.',
+  todos: 'Todo',
+  precinto: 'Precintado · abre 01·01·2027',
+  libre: 'Dominio público',
+  simular: 'Simular la medianoche',
+  volverPrecinto: 'Volver a precintar',
+  resultados: (n: number) => (n === 1 ? '1 obra' : `${n} obras`),
+  ojo: 'Letra pequeña',
+  cerrar: 'Cerrar',
+  anterior: 'Anterior',
+  siguiente: 'Siguiente',
+};
+
+export const trampas = {
+  antetitulo: 'La letra pequeña',
+  titulo: 'Libre aquí, no allí',
+  si: 'Libre',
+  no: 'Todavía no',
+  casos: [
+    {obra: 'La persistencia de la memoria', si: 'En EE. UU., desde 2027', no: 'En España, hasta 2060', porque: 'Allí cuenta la publicación (1931); aquí, la muerte de Dalí (1989).'},
+    {obra: 'H. G. Wells', si: 'En el Reino Unido, desde 2017', no: 'En España, hasta 2027', porque: 'El plazo español de 80 años para quien murió antes de 1987.'},
+    {obra: 'Winnie-the-Pooh', si: 'El texto de Milne', no: 'Los dibujos de Shepard', porque: 'Texto e ilustración son obras distintas: Shepard murió en 1976.'},
+    {obra: 'El doctor Frankenstein', si: 'La película de 1931', no: 'La marca del monstruo', porque: 'El derecho de autor caduca; las marcas se renuevan mientras se usen.'},
+    {obra: 'La guerra de los mundos', si: 'El original en inglés', no: 'Casi todas sus traducciones', porque: 'Cada traducción es una obra con su propio autor y su propio plazo.'},
+    {obra: 'Futura', si: 'El diseño de Renner', no: 'Las fuentes que se venden', porque: 'El archivo de una fuente es software con sus propios derechos.'},
+  ],
+};
+
+export const tesis = {
+  etiqueta: 'Tesis',
+  frase: 'El dominio público no se compra ni se gana: *se espera.* Y llega el mismo día, a la misma hora, para todo el mundo a la vez.',
+  firma: '1 de enero de 2027',
+};
+
+export const creditos = {
+  antetitulo: 'Fuentes',
+  titulo: 'Cómo está hecha',
+  cuerpo:
+    'Selección y textos propios. Datos de Wikipedia («2027 in public domain»), de la BNE y de la Ley de Propiedad Intelectual (disposición transitoria cuarta). Sin imágenes de las obras: hasta el 1 de enero siguen teniendo dueño.',
+  aviso:
+    'Esto es divulgación, no asesoramiento legal. Antes de reutilizar una obra, comprueba el caso concreto: nacionalidad del autor, lugar de publicación, traducción y edición.',
+  fuentes: [
+    {texto: 'Wikipedia: 2027 in public domain', url: 'https://en.wikipedia.org/wiki/2027_in_public_domain'},
+    {texto: 'BNE: autores en dominio público', url: 'https://www.bne.es/es/servicios/autores-dominio-publico'},
+    {texto: 'Duke Center for the Study of the Public Domain', url: 'https://web.law.duke.edu/cspd/publicdomainday/'},
+    {texto: 'Jost, tipografía libre (SIL OFL)', url: 'https://github.com/indestructible-type/Jost'},
+  ],
+  volver: 'Volver arriba',
+  wordmark: 'Dominio público',
+  firma: 'Textos y código hechos con IA (Claude) y revisados, como pieza de portfolio.',
+};
